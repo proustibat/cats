@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const API_KEY = process.env.REACT_APP_CAT_API_KEY;
+const API_KEY = import.meta.env.VITE_CAT_API_KEY;
 const BASE_URL = "https://api.thecatapi.com/v1";
 
-if (!API_KEY) {
-  throw new Error("You need an API KEY!")
+if ( !API_KEY ) {
+    throw new Error( "You need an API KEY!" );
 }
 
 axios.defaults.baseURL = BASE_URL;
@@ -50,7 +50,7 @@ export interface ICatBreed {
   hypoallergenic: number;
   reference_image_id: string;
 }
-export interface ICatBreedItem extends Pick<ICatBreed, "id" | "name"> {}
+export type TCatBreedItem = Pick<ICatBreed, "id" | "name">
 
 
 interface IImage {
@@ -60,20 +60,20 @@ interface IImage {
   width: number;
   height: number;
 }
-export interface IImageItem extends Pick<IImage, "url"> {}
+export type TImageItem = Pick<IImage, "url">;
 
 export const fetchBreeds = async (): Promise<ICatBreed[]> => {
-  const response = await axios.get<ICatBreed[]>(`/breeds`);
-  return response.data;
+    const response = await axios.get<ICatBreed[]>( `/breeds` );
+    return response.data;
 };
 
-export const fetchBreed = (id: string) => async (): Promise<ICatBreed> => {
-  const response = await axios.get<ICatBreed>(`/breeds/${id}`);
-  return response.data;
+export const fetchBreed = ( id: string ) => async (): Promise<ICatBreed> => {
+    const response = await axios.get<ICatBreed>( `/breeds/${ id }` );
+    return response.data;
 };
 
-export const fetchImage = (id: string) => async (): Promise<IImage> => {
-  const response = await axios.get<IImage>(`/images/${id}`);
-  return response.data;
+export const fetchImage = ( id: string ) => async (): Promise<IImage> => {
+    const response = await axios.get<IImage>( `/images/${ id }` );
+    return response.data;
 };
 

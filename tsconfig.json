@@ -1,25 +1,7 @@
 {
-    "include": [
-        "./src/**/*"
-    ],
-    "compilerOptions": {
-        "strict": true,
-        "esModuleInterop": true,
-        "noImplicitAny": true,
-        "noUncheckedIndexedAccess": true,
-        "lib": [
-            "dom",
-            "es2015"
-        ],
-        "jsx": "react-jsx",
-        "typeRoots": [
-            "node_modules/@types",
-            "node_modules/@testing-library"
-        ],
-        "types": [
-            "node",
-            "jest",
-            "jest-dom"
-        ]
-    }
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }

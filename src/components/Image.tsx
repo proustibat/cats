@@ -1,22 +1,22 @@
 import { ReactElement } from "react";
-import {useQuery} from "@tanstack/react-query";
-import {fetchImage, IImageItem} from "../apis/the-cat";
+import { useQuery } from "@tanstack/react-query";
+import { fetchImage, TImageItem } from "../apis/the-cat";
 
 interface ImageProps {
    id: string;
 }
 
 const Image = ( { id }: ImageProps ): ReactElement => {
-    const { isPending, error, data, isFetching } = useQuery<IImageItem, Error>({
-        queryKey: ['image', id],
-        queryFn: fetchImage(id),
-        select: (data: IImageItem) => ({url: data.url})
-    })
+    const { isPending, error, data, isFetching } = useQuery<TImageItem, Error>( {
+        queryKey: [ 'image', id ],
+        queryFn: fetchImage( id ),
+        select: ( data: TImageItem ) => ( { url: data.url } )
+    } );
 
-    if(isFetching || isPending) {
+    if( isFetching || isPending ) {
         return <>"LOADING ..."</>;
     }
-    if(error) {
+    if( error ) {
         return <>"ERROR"</>;
     }
 
