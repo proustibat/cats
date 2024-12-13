@@ -8,9 +8,10 @@ import fonts from "../styles/modern-fonts.module.css";
 
 interface CatCardProps {
    id: string;
+   onClose: () => void;
 }
 
-const CatCard = ( { id }: CatCardProps ): ReactElement => {
+const CatCard = ( { id, onClose }: CatCardProps ): ReactElement => {
     const [ imageId, setImageId ] = useState<string | null>( null );
 
 
@@ -33,17 +34,27 @@ const CatCard = ( { id }: CatCardProps ): ReactElement => {
     }, [ isFetched, data?.reference_image_id ] );
 
     if( isFetching || isPending || isFetchingImage || isPendingImage ) {
-        return <>LOADING DATA ...</>;
+        return <div className={styles.loading}>LOADING DATA ...</div>;
     }
     if( error ) {
-        return <>ERROR IMAGE</>;
+        return <div className={styles.loading}>ERROR IMAGE</div>;
     }
 
     return (
         <>
             {data && (
                 <section className={styles.container}>
-                    {dataImage?.url && <Image className={styles.image} url={dataImage.url} />}
+                    <button
+                        className={styles.closeButton}
+                        onClick={onClose}
+                    >
+                        <img
+                            style={{ position: "absolute", left: "0.35rem", top: "0.25rem", width: "1.3rem", height: "1.3rem" }}
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABBUlEQVR4nO3ZTQqDMBAF4HeKPOkV2+MWbE9jKXUhRcQk8xeZt3Il8xFNZgiQyWQyV8odwORdBH41fGtpygPAAmB2xkxrDctaU3UKgOf6gjeAG+zDTQ2vnho8MZRCeGIojfDAUAthiaE2wgJjhtDEmCM0MG4ISYw7QgITBtGDCYdowYRF1GDCI85ghkEcYYZD7M0Q899zhEGteWWGW4lttp+T53DWlUt8Wtz5sSOMzVU52p2GwfDEFhsew4pzIiyGDYddOAw7TuwwGAq0He4YCvZObhgqNIDmGCp2sWYYi1a8aGMs54mihfEYioo0xnOyK1KYCONpkcBc5urtMpehmUwmg3D5AAklyc9YEtl/AAAAAElFTkSuQmCC"
+                            alt="close"
+                        />
+                    </button>
+                    {dataImage?.url && <Image className={styles.image} url={dataImage.url}/>}
                     <p className={classnames( fonts.systemUi, styles.origin )}>UNITED STATES</p>
                     <h2 className={classnames( fonts.humanist, styles.name )}>
                         <span>{data.name}</span>

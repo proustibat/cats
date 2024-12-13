@@ -1,16 +1,20 @@
 import { MouseEvent, useState } from "react";
+import { DialogOverlay, DialogContent } from "@reach/dialog";
 import {
     useQuery,
 } from '@tanstack/react-query';
 import { fetchBreeds, type TCatBreedItem } from "./apis/the-cat";
 import CatCard from "./components/CatCard";
 
+import "@reach/dialog/styles.css";
 import "./styles/reset.css";
 import "./styles/styles.css";
 import styles from "./styles/App.module.css";
 
 
-export default function App() {
+const App = () => {
+    const [ showDialog, setShowDialog ] = useState<boolean>( false );
+
     const { isPending, error, data, isFetching } = useQuery<TCatBreedItem[], Error>( {
         queryKey: [ 'breeds' ],
         queryFn: fetchBreeds,
@@ -24,7 +28,12 @@ export default function App() {
 
     const handleClick = ( id:string ) => ( e: MouseEvent<HTMLButtonElement> ) => {
         e.preventDefault();
+        setShowDialog( true );
         setCurrentCatId( id );
+    };
+
+    const handleClose  = () => {
+        setShowDialog( false );
     };
 
     if( isFetching || isPending ) {
@@ -49,8 +58,19 @@ export default function App() {
                 )
             }
             {currentCatId && (
-                <CatCard id={currentCatId}/>
+                <DialogOverlay
+                    className={styles.dialogOverlay}
+                    isOpen={ showDialog }
+                    onDismiss={handleClose}
+                >
+                    <DialogContent className={styles.dialogContent}>
+                        <CatCard id={currentCatId} onClose={handleClose} />
+                      
+                    </DialogContent>
+                </DialogOverlay>
             )}
         </main>
     );
-}
+};
+
+export default App;
