@@ -1,21 +1,55 @@
-import CatAppWithMirakl from "./components/CatAppWithMirakl";
-import { fetchBreeds } from "./apis/the-cat";
-import "./styles.css";
+import {MouseEvent, useState} from "react";
+import {
+  useQuery,
+} from '@tanstack/react-query'
+import {fetchBreeds, type ICatBreedItem} from "./apis/the-cat";
+import CatCard from "./components/CatCard";
 
-const fetchUsers = async () => {
-  const res = await fetch("https://jsonplaceholder.typicode.com/users");
-  return res.json();
-};
+import "./styles/reset.css";
+import "./styles/styles.css";
 
-const fetchIt = async () => {
-  const response = await fetch("https://jsonplaceholder.typicode.com/posts");
-  return await response.json();
-};
 
 export default function App() {
+  const { isPending, error, data, isFetching } = useQuery<ICatBreedItem[], Error>({
+    queryKey: ['breeds'],
+    queryFn: fetchBreeds,
+    select: (data: ICatBreedItem[]) => data.map(({id, name}) => ({
+      id,
+      name,
+    }))
+  })
+
+  const [currentCatId, setCurrentCatId] = useState<string | null>(null);
+
+  const handleClick = (id:string) => (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setCurrentCatId(id);
+  }
+
+  if(isFetching || isPending) {
+    return <>"LOADING ..."</>;
+  }
+  if(error) {
+    return <>"ERROR"</>;
+  }
+
   return (
     <>
       <h1>Hello cats!</h1>
+      {
+          data && data.length > 0 && (
+            <ul className="breeds-list">
+              {data.map(({name, id}) => (
+                  <li key={id}>
+                    <button type="button" onClick={handleClick(id)}>{name}</button>
+                  </li>
+              ))}
+            </ul>
+          )
+      }
+      {currentCatId && (
+          <CatCard id={currentCatId}/>
+      )}
     </>
   );
 }
