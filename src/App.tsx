@@ -7,6 +7,7 @@ import CatCard from "./components/CatCard";
 
 import "./styles/reset.css";
 import "./styles/styles.css";
+import styles from "./styles/App.module.css";
 
 
 export default function App() {
@@ -34,7 +35,7 @@ export default function App() {
     }
 
     return (
-        <>
+        <main className={styles.main}>
             <h1>Hello cats!</h1>
             {
                 data && data.length > 0 && (
@@ -50,6 +51,6 @@ export default function App() {
             {currentCatId && (
                 <CatCard id={currentCatId}/>
             )}
-        </>
+        </main>
     );
 }

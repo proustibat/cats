@@ -2,6 +2,9 @@ import { ReactElement } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchBreed, ICatBreed } from "../apis/the-cat";
 import Image from "./Image";
+import classnames from "classnames";
+import styles from "../styles/CatCard.module.css";
+import fonts from "../styles/modern-fonts.module.css";
 
 interface CatCardProps {
    id: string;
@@ -23,11 +26,18 @@ const CatCard = ( { id }: CatCardProps ): ReactElement => {
     return (
         <>
             {data && (
-                <section>
-                    <h2>{data.name}{data.alt_names && ( <>&nbsp;<span>(also called {data.alt_names})</span></> )}</h2>
-                    <p>{data.description}</p>
-                    <p>Temperament: {data.temperament}</p>
-                    {data.reference_image_id && <Image id={data.reference_image_id} />}
+                <section className={styles.container}>
+                    {data.reference_image_id && <Image className={styles.image} id={data.reference_image_id} />}
+                    <p className={classnames( fonts.systemUi, styles.origin )}>UNITED STATES</p>
+                    <h2 className={classnames( fonts.humanist, styles.name )}>
+                        <span>{data.name}</span>
+                        {data.alt_names && <span>(also called {data.alt_names})</span>}
+                    </h2>
+                    <p className={styles.description}>{data.description}</p>
+                    <p className={styles.temperament}>
+                        <span>Temperament</span>
+                        <span>{data.temperament}</span>
+                    </p>
                 </section>
             )}
         </>

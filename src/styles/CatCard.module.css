@@ -1,0 +1,50 @@
+.container {
+    width: 90%;
+    max-width: 400px;
+    margin: 0 auto;
+
+    background-color:white;
+    box-shadow: 0 5px 20px #555;
+    padding-bottom: 1rem;
+}
+
+.image {
+    text-align: center;
+}
+
+.origin {
+    text-align: center;
+    color: darkgray;
+    line-height: 1rem;
+    margin-top: 1rem;
+    padding-bottom: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.name {
+    text-align: center;
+    color: rgba(105, 105, 105, 0.82);
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3rem;
+    span:nth-child(2) {
+        font-size: 1rem;
+        margin-top: 0.5rem;
+        color: rgba(105, 105, 105, 0.8);
+    }
+    margin: 1rem auto;
+    padding: 0 0.5rem;
+}
+
+.description {
+    padding: 0.5rem 1.5rem;
+}
+
+.temperament {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 1.5rem;
+    span:nth-child(1) {
+        font-style: italic;
+    }
+}

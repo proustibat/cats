@@ -1,0 +1,77 @@
+/* System font stack CSS organized by typeface classification for every modern OS */
+/* https://modernfontstacks.com/ */
+
+.systemUi {
+    font-family: system-ui, sans-serif;
+    font-weight: normal;
+}
+
+.transitional {
+    font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
+    font-weight: normal;
+}
+
+.oldStyle {
+    font-family: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052, serif;
+    font-weight: normal;
+}
+
+.humanist {
+    font-family: Seravek, 'Gill Sans Nova', Ubuntu, Calibri, 'DejaVu Sans', source-sans-pro, sans-serif;
+    font-weight: normal;
+}
+
+.geometricHumanist {
+    font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
+    font-weight: normal;
+}
+
+.classicalHumanist {
+    font-family: Optima, Candara, 'Noto Sans', source-sans-pro, sans-serif;
+    font-weight: normal;
+}
+
+.neoGrotesque {
+    font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+    font-weight: normal;
+}
+
+.monospaceSlabSerif {
+    font-family: 'Nimbus Mono PS', 'Courier New', monospace;
+    font-weight: normal;
+}
+
+.monospaceCode {
+    font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+    font-weight: normal;
+}
+
+.industrial {
+    font-family: Bahnschrift, 'DIN Alternate', 'Franklin Gothic Medium', 'Nimbus Sans Narrow', sans-serif-condensed, sans-serif;
+    font-weight: normal;
+}
+
+.roundedSans {
+    font-family: ui-rounded, 'Hiragino Maru Gothic ProN', Quicksand, Comfortaa, Manjari, 'Arial Rounded MT', 'Arial Rounded MT Bold', Calibri, source-sans-pro, sans-serif;
+    font-weight: normal;
+}
+
+.slabSerif {
+    font-family: Rockwell, 'Rockwell Nova', 'Roboto Slab', 'DejaVu Serif', 'Sitka Small', serif;
+    font-weight: normal;
+}
+
+.antique {
+    font-family: Superclarendon, 'Bookman Old Style', 'URW Bookman', 'URW Bookman L', 'Georgia Pro', Georgia, serif;
+    font-weight: normal;
+}
+
+.didone {
+    font-family: Didot, 'Bodoni MT', 'Noto Serif Display', 'URW Palladio L', P052, Sylfaen, serif;
+    font-weight: normal;
+}
+
+.handwritten {
+    font-family: 'Segoe Print', 'Bradley Hand', Chilanka, TSCu_Comic, casual, cursive;
+    font-weight: normal;
+}
