@@ -72,7 +72,7 @@ export const fetchBreed = ( id: string ) => async (): Promise<ICatBreed> => {
     return response.data;
 };
 
-export const fetchImage = ( id: string ) => async (): Promise<IImage> => {
+export const fetchImage = ( id: string | null ) => async (): Promise<IImage> => {
     const response = await axios.get<IImage>( `/images/${ id }` );
     return response.data;
 };
