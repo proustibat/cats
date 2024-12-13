@@ -4,9 +4,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import App from "./App";
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
-const ReactQueryDevtools =
+export const ReactQueryDevtools =
     process.env.NODE_ENV === 'production'
         ? () => null // Render nothing in production
         : React.lazy( () =>
@@ -17,14 +17,16 @@ const ReactQueryDevtools =
         );
 
 
-const rootElement = document.getElementById("root")!;
-const root = ReactDOM.createRoot(rootElement);
-
-root.render(
-  <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <App />
-      <ReactQueryDevtools />
-      </QueryClientProvider>
-  </React.StrictMode>
-);
+// Render the app
+const rootElement = document.getElementById( 'root' )!;
+if ( !rootElement.innerHTML ) {
+    const root = ReactDOM.createRoot( rootElement );
+    root.render(
+        <React.StrictMode>
+            <QueryClientProvider client={queryClient}>
+                <App />
+                <ReactQueryDevtools />
+            </QueryClientProvider>
+        </React.StrictMode>,
+    );
+}
