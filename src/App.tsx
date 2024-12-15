@@ -1,24 +1,39 @@
-import { MouseEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useState } from "react";
 import {
     useQuery,
 } from '@tanstack/react-query';
-import { fetchBreeds, type TCatBreedItem } from "./apis/the-cat";
+import classnames from "classnames";
+import { useDebounce } from "@uidotdev/usehooks";
+import { fetchBreeds, search, type TCatBreedItem } from "./apis/the-cat";
 import CatCard from "./components/CatCard";
 import BreedsList from "./components/BreedsList.tsx";
 import Modal from "./components/Modal.tsx";
+import SearchBox from "./components/SearchBox.tsx";
 
 import "@reach/dialog/styles.css";
 import "./styles/reset.css";
 import "./styles/styles.css";
 import styles from "./styles/App.module.css";
+import fonts from "./styles/modern-fonts.module.css";
 
 const App = () => {
     const [ showDialog, setShowDialog ] = useState<boolean>( false );
+    const [ searchTerm, setSearchTerm ] = useState<string>( "" );
+    const debouncedSearch = useDebounce( searchTerm, 500 );
 
     const { isPending, error, data, isFetching } = useQuery<TCatBreedItem[], Error>( {
         queryKey: [ 'breeds' ],
         queryFn: fetchBreeds,
         select: ( data: TCatBreedItem[] ) => data.map( ( { id, name } ) => ( { id, name } ) ) } );
+
+    const { error: errorSearch, data: dataSearch, isFetching: isFetchingSearch } = useQuery<TCatBreedItem[], Error>( {
+        queryKey: [ 'search', debouncedSearch ],
+        queryFn: search( debouncedSearch ),
+        select: ( data: TCatBreedItem[] ) => data.map( ( { id, name } ) => ( { id, name } ) ),
+        enabled: !!debouncedSearch,
+        // placeholderData: ( prev ) => prev
+    } );
+
 
     const [ currentCatId, setCurrentCatId ] = useState<string | null>( null );
 
@@ -30,6 +45,11 @@ const App = () => {
 
     const handleClose  = () => setShowDialog( false );
 
+    const handleChange = ( e: ChangeEvent<HTMLInputElement> ) => {
+        e.preventDefault();
+        setSearchTerm( e.target.value );
+    };
+
     if( isFetching || isPending ) {
         return <>LOADING ...</>;
     }
@@ -38,9 +58,20 @@ const App = () => {
     }
 
     return (
-        <main className={styles.main}>
+        <main className={classnames( fonts.industrial, styles.main )}>
             <h1 className={styles.title}>Hello cats!</h1>
-            { data && data.length > 0 && <BreedsList list={data} onItemClick={handleClick} /> }
+
+            <SearchBox searchTerm={searchTerm} onChange={handleChange} />
+            <div className={styles.searchResultMessage}>
+                {( isFetchingSearch ) && <p>Loading...</p>}
+                {errorSearch && <p>Error</p>}
+            </div>
+
+            <BreedsList
+                list={ searchTerm ? dataSearch : data}
+                onItemClick={handleClick}
+            />
+
             {currentCatId && (
                 <Modal showDialog={ showDialog } onDismiss={ handleClose } >
                     <CatCard id={currentCatId} onClose={handleClose} />

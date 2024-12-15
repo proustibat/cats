@@ -1,0 +1,29 @@
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    padding: 0 1rem;
+    margin: 0 auto 2rem auto;
+}
+.input {
+    width: 100%;
+    outline: none;
+    border: 1px solid rgba(105, 105, 105, 0.82);
+    border-radius: 2rem;
+    padding: 0.6rem 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08rem;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    text-align: center;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+.input:focus {
+    outline: none;
+}
+
+.input::placeholder {
+    color: rgb(225, 225, 225, 0.8);
+}

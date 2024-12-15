@@ -14,10 +14,10 @@
 }
 
 .dialogContent {
-    padding: 0;
-    margin: 0 auto;
-    width: auto;
+    padding: 0!important;
+    margin: 0 auto!important;
+    width: auto!important;
     max-width: 400px;
-    height: auto;
-    background-color: rgba( 211, 211, 211, 0.5 );
+    height: auto!important;
+    background-color: rgba( 211, 211, 211, 0.5 )!important;
 }

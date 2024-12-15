@@ -7,6 +7,7 @@
     "@reach/dialog": "^0.18.0",
     "@tanstack/react-query": "5.62.7",
     "@types/node": "22.10.2",
+    "@uidotdev/usehooks": "^2.4.1",
     "axios": "1.7.9",
     "classnames": "2.5.1",
     "loader-utils": "3.3.1",

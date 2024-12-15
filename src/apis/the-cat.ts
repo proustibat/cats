@@ -78,3 +78,7 @@ export const fetchImage = ( id: string | null ) => async (): Promise<IImage> => 
     return response.data;
 };
 
+export const search = ( searchTerm: string ) => async (): Promise<ICatBreed[]> => {
+    const response = await axios.get<ICatBreed[]>( `/breeds/search?q=${ searchTerm }&attach_image=1` );
+    return response.data;
+};
