@@ -1,11 +1,11 @@
 .container {
     max-width: 400px;
     margin: 0 auto;
-
     background-color:white;
     box-shadow: 0 5px 20px #555;
     padding-bottom: 1rem;
     position: relative;
+    overflow:hidden;
 }
 
 .image {
@@ -51,16 +51,4 @@
 
 .loading {
     text-align: center;
-}
-
-.closeButton {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    border: none;
-    background: white;
-    border-radius: 50%;
-    width: 1.8rem;
-    height: 1.8rem;
-    opacity: 0.5;
 }

@@ -1,16 +1,16 @@
 import { MouseEvent, useState } from "react";
-import { DialogOverlay, DialogContent } from "@reach/dialog";
 import {
     useQuery,
 } from '@tanstack/react-query';
 import { fetchBreeds, type TCatBreedItem } from "./apis/the-cat";
 import CatCard from "./components/CatCard";
+import BreedsList from "./components/BreedsList.tsx";
+import Modal from "./components/Modal.tsx";
 
 import "@reach/dialog/styles.css";
 import "./styles/reset.css";
 import "./styles/styles.css";
 import styles from "./styles/App.module.css";
-
 
 const App = () => {
     const [ showDialog, setShowDialog ] = useState<boolean>( false );
@@ -18,11 +18,7 @@ const App = () => {
     const { isPending, error, data, isFetching } = useQuery<TCatBreedItem[], Error>( {
         queryKey: [ 'breeds' ],
         queryFn: fetchBreeds,
-        select: ( data: TCatBreedItem[] ) => data.map( ( { id, name } ) => ( {
-            id,
-            name,
-        } ) )
-    } );
+        select: ( data: TCatBreedItem[] ) => data.map( ( { id, name } ) => ( { id, name } ) ) } );
 
     const [ currentCatId, setCurrentCatId ] = useState<string | null>( null );
 
@@ -32,42 +28,23 @@ const App = () => {
         setCurrentCatId( id );
     };
 
-    const handleClose  = () => {
-        setShowDialog( false );
-    };
+    const handleClose  = () => setShowDialog( false );
 
     if( isFetching || isPending ) {
-        return <>"LOADING ..."</>;
+        return <>LOADING ...</>;
     }
     if( error ) {
-        return <>"ERROR"</>;
+        return <>ERROR</>;
     }
 
     return (
         <main className={styles.main}>
-            <h1>Hello cats!</h1>
-            {
-                data && data.length > 0 && (
-                    <ul className="breeds-list">
-                        {data.map( ( { name, id } ) => (
-                            <li key={id}>
-                                <button type="button" onClick={handleClick( id )}>{name}</button>
-                            </li>
-                        ) )}
-                    </ul>
-                )
-            }
+            <h1 className={styles.title}>Hello cats!</h1>
+            { data && data.length > 0 && <BreedsList list={data} onItemClick={handleClick} /> }
             {currentCatId && (
-                <DialogOverlay
-                    className={styles.dialogOverlay}
-                    isOpen={ showDialog }
-                    onDismiss={handleClose}
-                >
-                    <DialogContent className={styles.dialogContent}>
-                        <CatCard id={currentCatId} onClose={handleClose} />
-                      
-                    </DialogContent>
-                </DialogOverlay>
+                <Modal showDialog={ showDialog } onDismiss={ handleClose } >
+                    <CatCard id={currentCatId} onClose={handleClose} />
+                </Modal>
             )}
         </main>
     );

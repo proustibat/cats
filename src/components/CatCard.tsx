@@ -5,6 +5,7 @@ import Image from "./Image";
 import classnames from "classnames";
 import styles from "../styles/CatCard.module.css";
 import fonts from "../styles/modern-fonts.module.css";
+import CloseButton from "./CloseButton.tsx";
 
 interface CatCardProps {
    id: string;
@@ -44,16 +45,7 @@ const CatCard = ( { id, onClose }: CatCardProps ): ReactElement => {
         <>
             {data && (
                 <section className={styles.container}>
-                    <button
-                        className={styles.closeButton}
-                        onClick={onClose}
-                    >
-                        <img
-                            style={{ position: "absolute", left: "0.35rem", top: "0.25rem", width: "1.3rem", height: "1.3rem" }}
-                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABBUlEQVR4nO3ZTQqDMBAF4HeKPOkV2+MWbE9jKXUhRcQk8xeZt3Il8xFNZgiQyWQyV8odwORdBH41fGtpygPAAmB2xkxrDctaU3UKgOf6gjeAG+zDTQ2vnho8MZRCeGIojfDAUAthiaE2wgJjhtDEmCM0MG4ISYw7QgITBtGDCYdowYRF1GDCI85ghkEcYYZD7M0Q899zhEGteWWGW4lttp+T53DWlUt8Wtz5sSOMzVU52p2GwfDEFhsew4pzIiyGDYddOAw7TuwwGAq0He4YCvZObhgqNIDmGCp2sWYYi1a8aGMs54mihfEYioo0xnOyK1KYCONpkcBc5urtMpehmUwmg3D5AAklyc9YEtl/AAAAAElFTkSuQmCC"
-                            alt="close"
-                        />
-                    </button>
+                    <CloseButton onClose={ onClose} />
                     {dataImage?.url && <Image className={styles.image} url={dataImage.url}/>}
                     <p className={classnames( fonts.systemUi, styles.origin )}>UNITED STATES</p>
                     <h2 className={classnames( fonts.humanist, styles.name )}>
