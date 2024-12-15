@@ -4242,6 +4242,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
+svg-loader-es6@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/svg-loader-es6/-/svg-loader-es6-1.1.5.tgz#6197cc1114778fe500f97119bd039f01962f5537"
+  integrity sha512-rmYXwQIc73t+PNCD9mDbbwKPJ9WQSXlVzpbHlrYDpgD+6iYzmOKjktEi6lIlvxFozfv/4vxe+HY+UhCPqreR1A==
+
 symbol-tree@^3.2.4:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"

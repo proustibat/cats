@@ -9,6 +9,7 @@ import CatCard from "./components/CatCard";
 import BreedsList from "./components/BreedsList.tsx";
 import Modal from "./components/Modal.tsx";
 import SearchBox from "./components/SearchBox.tsx";
+import loader from "./assets/loader.gif";
 
 import "@reach/dialog/styles.css";
 import "./styles/reset.css";
@@ -51,7 +52,7 @@ const App = () => {
     };
 
     if( isFetching || isPending ) {
-        return <>LOADING ...</>;
+        return <p className={styles.loading}><span>Loading...</span><img src={loader} alt="loading..."/></p>;
     }
     if( error ) {
         return <>ERROR</>;

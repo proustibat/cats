@@ -22,7 +22,6 @@ const BreedsList = ( { list, onItemClick }: BreedsListProps ): ReactElement => {
                     </ul>
                 )
             }
-
         </>
     );
 };

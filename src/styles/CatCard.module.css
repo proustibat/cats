@@ -51,4 +51,7 @@
 
 .loading {
     text-align: center;
+    padding: 5rem 10rem;
+    width: 100%;
+    background-color: white;
 }

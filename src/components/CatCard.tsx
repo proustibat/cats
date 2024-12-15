@@ -1,5 +1,7 @@
 import { ReactElement, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import loader from "../assets/loader.gif";
+
 import { fetchBreed, fetchImage, ICatBreed, TImageItem } from "../apis/the-cat";
 import Image from "./Image";
 import classnames from "classnames";
@@ -35,7 +37,9 @@ const CatCard = ( { id, onClose }: CatCardProps ): ReactElement => {
     }, [ isFetched, data?.reference_image_id ] );
 
     if( isFetching || isPending || isFetchingImage || isPendingImage ) {
-        return <div className={styles.loading}>LOADING DATA ...</div>;
+        return <div id="" className={styles.loading}>
+            <img src={loader} alt="loading..." />
+        </div>;
     }
     if( error ) {
         return <div className={styles.loading}>ERROR IMAGE</div>;
