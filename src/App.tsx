@@ -49,12 +49,14 @@ const App = () => {
     };
 
     const handleNav = ( direction: "prev"| "next" ) => {
-        console.log( direction, currentCatId );
-
         const currentList = searchTerm ? dataSearch : data;
         const currentIndex = currentList?.findIndex( breed => breed.id === currentCatId );
 
-        if( !currentList || !currentIndex || currentIndex === 0 || currentIndex === currentList.length - 1 ) {
+        if ( !currentList
+            || typeof currentIndex === "undefined"
+            || ( currentIndex === 0 && direction === "prev" )
+            || ( currentIndex === currentList.length - 1 && direction === "next" )
+        ) {
             return;
         }
 

@@ -29,7 +29,6 @@ const CatAppWithMirakl = () => {
     const [ currentCatId, setCurrentCatId ] = useState<number | null>( null );
 
     const handleClick = ( catId: number ) => () => {
-        console.log( `You select the cat with id: ${ catId }` );
         setCurrentCatId( catId );
     };
 

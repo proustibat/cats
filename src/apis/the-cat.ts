@@ -89,7 +89,6 @@ export const fetchBreeds = async (): Promise<ICatBreed[]> => {
 
 export const fetchVotes = async (): Promise<IVote[]> => {
     const votes = await axios.get<IVote[]>( `/votes` );
-    console.log( votes.data );
     return votes.data;
 };
 
