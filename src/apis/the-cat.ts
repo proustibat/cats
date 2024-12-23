@@ -1,8 +1,11 @@
 import axios from "axios";
 
+export const API_TYPE = import.meta.env.VITE_API_TYPE;
 const API_KEY = import.meta.env.VITE_CAT_API_KEY;
-const BASE_URL = "https://api.thecatapi.com/v1";
-// const BASE_URL = "https://api.thedogapi.com/v1";
+const BASE_URL = API_TYPE === "dogs"
+    ? "https://api.thedogapi.com/v1"
+    : "https://api.thecatapi.com/v1";
+
 
 if ( !API_KEY ) {
     throw new Error( "You need an API KEY!" );

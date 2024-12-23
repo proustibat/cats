@@ -8,8 +8,35 @@
     overflow:hidden;
 }
 
+.navContainerWithImage {
+    position: relative;
+}
+
 .image {
     text-align: center;
+}
+
+.nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+
+    button {
+        width: 2rem;
+        height: 2rem;
+        border: none;
+        background: white;
+        border-radius: 50%;
+        opacity: 0.5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0.5rem;
+        cursor: pointer;
+    }
 }
 
 .origin {

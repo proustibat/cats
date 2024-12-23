@@ -4,7 +4,7 @@ import {
 } from '@tanstack/react-query';
 import classnames from "classnames";
 import { useDebounce } from "@uidotdev/usehooks";
-import { fetchBreeds, QUERY_KEY, search, type TCatBreedItem } from "./apis/the-cat";
+import { API_TYPE, fetchBreeds, QUERY_KEY, search, type TCatBreedItem } from "./apis/the-cat";
 import CatCard from "./components/CatCard";
 import BreedsList from "./components/BreedsList.tsx";
 import Modal from "./components/Modal.tsx";
@@ -49,6 +49,21 @@ const App = () => {
         setCurrentCatId( id );
     };
 
+    const handleNav = ( direction: "prev"| "next" ) => {
+        console.log( direction, currentCatId );
+
+        const currentList = searchTerm ? dataSearch : data;
+        const currentIndex = currentList?.findIndex( breed => breed.id === currentCatId );
+
+        if( !currentList || !currentIndex || currentIndex === 0 || currentIndex === currentList.length - 1 ) {
+            return;
+        }
+
+        setCurrentCatId( direction === "prev"
+            ? currentList[currentIndex-1].id
+            : currentList[currentIndex+1].id );
+    };
+
     const handleClose  = () => setShowDialog( false );
 
     const handleChange = ( e: ChangeEvent<HTMLInputElement> ) => {
@@ -65,7 +80,7 @@ const App = () => {
 
     return (
         <main className={classnames( fonts.industrial, styles.main )}>
-            <h1 className={styles.title}>Hello cats!</h1>
+            <h1 className={styles.title}>Hello {API_TYPE === "dogs" ? "dogs": "cats"}!</h1>
 
             <SearchBox searchTerm={searchTerm} onChange={handleChange} />
             <div className={styles.searchResultMessage}>
@@ -80,7 +95,7 @@ const App = () => {
 
             {currentCatId && (
                 <Modal showDialog={ showDialog } onDismiss={ handleClose } >
-                    <CatCard id={currentCatId} onClose={handleClose} />
+                    <CatCard id={currentCatId} onClose={handleClose} onNav={handleNav} />
                 </Modal>
             )}
         </main>
