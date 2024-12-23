@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import App from "./App";
+import { VotesProvider } from "./contexts/VotesContext.tsx";
 
 const queryClient = new QueryClient();
 
@@ -24,7 +25,9 @@ if ( !rootElement.innerHTML ) {
     root.render(
         <React.StrictMode>
             <QueryClientProvider client={queryClient}>
-                <App />
+                <VotesProvider>
+                    <App />
+                </VotesProvider>
                 <ReactQueryDevtools />
             </QueryClientProvider>
         </React.StrictMode>,

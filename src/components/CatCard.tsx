@@ -1,13 +1,13 @@
 import { ReactElement, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import loader from "../assets/loader.gif";
-
-import { fetchBreed, fetchImage, ICatBreed, TImageItem } from "../apis/the-cat";
-import Image from "./Image";
 import classnames from "classnames";
-import styles from "../styles/CatCard.module.css";
-import fonts from "../styles/modern-fonts.module.css";
+import { fetchBreed, fetchImage, ICatBreed, QUERY_KEY, TImageItem } from "../apis/the-cat";
+import Image from "./Image";
 import CloseButton from "./CloseButton.tsx";
+import loader from "../assets/loader.gif";
+import fonts from "../styles/modern-fonts.module.css";
+import styles from "../styles/CatCard.module.css";
+import Rate from "./Rate.tsx";
 
 interface CatCardProps {
    id: string;
@@ -17,14 +17,13 @@ interface CatCardProps {
 const CatCard = ( { id, onClose }: CatCardProps ): ReactElement => {
     const [ imageId, setImageId ] = useState<string | null>( null );
 
-
     const { isPending, error, data, isFetching, isFetched } = useQuery<ICatBreed, Error>( {
-        queryKey: [ 'breed', id ],
+        queryKey: [ QUERY_KEY.BREED, id ],
         queryFn: fetchBreed( id ),
     } );
 
     const { isPending: isPendingImage, data: dataImage, isFetching: isFetchingImage } = useQuery<TImageItem, Error>( {
-        queryKey: [ 'image', id ],
+        queryKey: [ QUERY_KEY.IMAGE, id ],
         queryFn: fetchImage( imageId ),
         select: ( data: TImageItem ) => ( { url: data.url } ),
         enabled: !!imageId
@@ -36,7 +35,7 @@ const CatCard = ( { id, onClose }: CatCardProps ): ReactElement => {
         }
     }, [ isFetched, data?.reference_image_id ] );
 
-    if( isFetching || isPending || isFetchingImage || isPendingImage ) {
+    if( isFetching || isPending || ( ( isFetchingImage || isPendingImage ) && data?.reference_image_id ) ) {
         return <div id="" className={styles.loading}>
             <img src={loader} alt="loading..." />
         </div>;
@@ -61,6 +60,7 @@ const CatCard = ( { id, onClose }: CatCardProps ): ReactElement => {
                         <span>Temperament</span>
                         <span>{data.temperament}</span>
                     </p>
+                    {imageId && <Rate imageId={imageId} />}
                 </section>
             )}
         </>

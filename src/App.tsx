@@ -4,7 +4,7 @@ import {
 } from '@tanstack/react-query';
 import classnames from "classnames";
 import { useDebounce } from "@uidotdev/usehooks";
-import { fetchBreeds, search, type TCatBreedItem } from "./apis/the-cat";
+import { fetchBreeds, QUERY_KEY, search, type TCatBreedItem } from "./apis/the-cat";
 import CatCard from "./components/CatCard";
 import BreedsList from "./components/BreedsList.tsx";
 import Modal from "./components/Modal.tsx";
@@ -17,24 +17,29 @@ import "./styles/styles.css";
 import styles from "./styles/App.module.css";
 import fonts from "./styles/modern-fonts.module.css";
 
+
+const filterBreedItems = ( data: TCatBreedItem[] ) => data.map( ( { id, name, reference_image_id } ) => ( { id, name, reference_image_id } ) );
+
 const App = () => {
     const [ showDialog, setShowDialog ] = useState<boolean>( false );
     const [ searchTerm, setSearchTerm ] = useState<string>( "" );
     const debouncedSearch = useDebounce( searchTerm, 500 );
 
+    // fetch
     const { isPending, error, data, isFetching } = useQuery<TCatBreedItem[], Error>( {
-        queryKey: [ 'breeds' ],
+        queryKey: [ QUERY_KEY.BREEDS ],
         queryFn: fetchBreeds,
-        select: ( data: TCatBreedItem[] ) => data.map( ( { id, name } ) => ( { id, name } ) ) } );
+        select: filterBreedItems
+    } );
 
+    // search
     const { error: errorSearch, data: dataSearch, isFetching: isFetchingSearch } = useQuery<TCatBreedItem[], Error>( {
-        queryKey: [ 'search', debouncedSearch ],
+        queryKey: [ QUERY_KEY.SEARCH, debouncedSearch ],
         queryFn: search( debouncedSearch ),
-        select: ( data: TCatBreedItem[] ) => data.map( ( { id, name } ) => ( { id, name } ) ),
+        select: filterBreedItems,
         enabled: !!debouncedSearch,
         placeholderData: ( prev ) => prev && prev?.length > 0 ? prev : data
     } );
-
 
     const [ currentCatId, setCurrentCatId ] = useState<string | null>( null );
 

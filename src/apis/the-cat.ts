@@ -11,7 +11,14 @@ if ( !API_KEY ) {
 axios.defaults.baseURL = BASE_URL;
 axios.defaults.headers.common["Content-Type"] = "application/json";
 axios.defaults.headers.common["x-api-key"] = API_KEY;
-axios.defaults.method = "GET";
+
+export enum QUERY_KEY {
+    BREEDS = "breeds",
+    SEARCH = "search",
+    BREED = "breed",
+    IMAGE = "image",
+    VOTES = "votes",
+}
 
 export interface ICatBreed {
   weight: {
@@ -51,8 +58,16 @@ export interface ICatBreed {
   hypoallergenic: number;
   reference_image_id: string;
 }
-export type TCatBreedItem = Pick<ICatBreed, "id" | "name">
+export type TCatBreedItem = Pick<ICatBreed, "id" | "name" | "reference_image_id">
 
+export interface IVote {
+  country_code: string;
+  created_at: string
+  id: number
+  image_id: string
+  sub_id: string
+  value: number
+}
 
 interface IImage {
   id: string;
@@ -64,8 +79,14 @@ interface IImage {
 export type TImageItem = Pick<IImage, "url">;
 
 export const fetchBreeds = async (): Promise<ICatBreed[]> => {
-    const response = await axios.get<ICatBreed[]>( `/breeds` );
-    return response.data;
+    const breeds = await axios.get<ICatBreed[]>( `/breeds` );
+    return breeds.data;
+};
+
+export const fetchVotes = async (): Promise<IVote[]> => {
+    const votes = await axios.get<IVote[]>( `/votes` );
+    console.log( votes.data );
+    return votes.data;
 };
 
 export const fetchBreed = ( id: string ) => async (): Promise<ICatBreed> => {
@@ -81,4 +102,18 @@ export const fetchImage = ( id: string | null ) => async (): Promise<IImage> => 
 export const search = ( searchTerm: string ) => async (): Promise<ICatBreed[]> => {
     const response = await axios.get<ICatBreed[]>( `/breeds/search?q=${ searchTerm }&attach_image=1` );
     return response.data;
+};
+
+export enum ACTION_VOTE {
+    UP = "up",
+    DOWN = "down"
+}
+
+export const postVote = ( { imageId, action }: {imageId: string, action: ACTION_VOTE } ) => {
+    console.log( "POSTVOTE ", imageId, action );
+    return axios.post( '/votes', {
+        image_id: imageId,
+        sub_id: crypto.randomUUID(), // todo: using a user to prevent multi votes
+        value: action === ACTION_VOTE.UP ? 1 : -1,
+    } );
 };
