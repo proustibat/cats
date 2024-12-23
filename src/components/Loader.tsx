@@ -1,17 +1,8 @@
 import { ReactElement } from "react";
-import { API_TYPE } from "../apis/the-cat.ts";
-import dogGif from "../assets/dog.gif";
-import catGif from "../assets/cat.gif";
+import styles from "../styles/Loader.module.css";
 
 const Loader = (): ReactElement => {
-    return <img
-        width="64"
-        height="64"
-        src={API_TYPE === "dogs"
-            ? dogGif
-            : catGif}
-        alt="loading..."
-    />;
+    return <div className={styles.pulse} />;
 };
 
 export default Loader;
