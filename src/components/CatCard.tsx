@@ -4,7 +4,7 @@ import classnames from "classnames";
 import { fetchBreed, fetchImage, ICatBreed, QUERY_KEY, TImageItem } from "../apis/the-cat";
 import Image from "./Image";
 import CloseButton from "./CloseButton.tsx";
-import loader from "../assets/loader.gif";
+import Loader from "./Loader";
 import fonts from "../styles/modern-fonts.module.css";
 import styles from "../styles/CatCard.module.css";
 import Rate from "./Rate.tsx";
@@ -43,7 +43,7 @@ const CatCard = ( { id, onClose, onNav }: CatCardProps ): ReactElement => {
 
     if( isFetching || isPending || ( ( isFetchingImage || isPendingImage ) && data?.reference_image_id ) ) {
         return <div id="" className={styles.loading}>
-            <img src={loader} alt="loading..." />
+            <Loader />
         </div>;
     }
     if( error ) {

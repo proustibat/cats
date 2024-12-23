@@ -9,14 +9,13 @@ import CatCard from "./components/CatCard";
 import BreedsList from "./components/BreedsList.tsx";
 import Modal from "./components/Modal.tsx";
 import SearchBox from "./components/SearchBox.tsx";
-import loader from "./assets/loader.gif";
+import Loader from "./components/Loader.tsx";
 
 import "@reach/dialog/styles.css";
 import "./styles/reset.css";
 import "./styles/styles.css";
 import styles from "./styles/App.module.css";
 import fonts from "./styles/modern-fonts.module.css";
-
 
 const filterBreedItems = ( data: TCatBreedItem[] ) => data.map( ( { id, name, reference_image_id } ) => ( { id, name, reference_image_id } ) );
 
@@ -72,7 +71,7 @@ const App = () => {
     };
 
     if( isFetching || isPending ) {
-        return <p className={styles.loading}><span>Loading...</span><img src={loader} alt="loading..."/></p>;
+        return <p className={styles.loading}><span>Loading...</span><Loader /></p>;
     }
     if( error ) {
         return <>ERROR</>;

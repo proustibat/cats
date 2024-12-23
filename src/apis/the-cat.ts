@@ -21,6 +21,7 @@ export enum QUERY_KEY {
     BREED = "breed",
     IMAGE = "image",
     VOTES = "votes",
+    RATE = "rate",
 }
 
 export interface ICatBreed {

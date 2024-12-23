@@ -13,6 +13,7 @@ const Rate = ( { imageId }: RateProps ): ReactElement => {
     const rate = useRate( imageId );
 
     const { isPending, isError, error, isSuccess, mutate } = useMutation( {
+        mutationKey: [ QUERY_KEY.RATE ],
         mutationFn: postVote,
         onSuccess: () => queryClient.invalidateQueries( { queryKey: [ QUERY_KEY.VOTES ] } )
     } );
@@ -26,7 +27,7 @@ const Rate = ( { imageId }: RateProps ): ReactElement => {
         <>
             <div className={styles.container}>
                 <button onClick={handleVote} value={ACTION_VOTE.DOWN} type="button" className={styles.button}>-</button>
-                <p className={styles.rate}>Rate: {rate}/10</p>
+                <p className={styles.rate}>Votes: {rate}</p>
                 <button onClick={handleVote} value={ACTION_VOTE.UP} type="button" className={styles.button}>+</button>
             </div>
             <div className={styles.container}>
