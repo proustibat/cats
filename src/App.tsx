@@ -32,7 +32,7 @@ const App = () => {
         queryFn: search( debouncedSearch ),
         select: ( data: TCatBreedItem[] ) => data.map( ( { id, name } ) => ( { id, name } ) ),
         enabled: !!debouncedSearch,
-        placeholderData: ( prev ) => prev
+        placeholderData: ( prev ) => prev && prev?.length > 0 ? prev : data
     } );
 
 
