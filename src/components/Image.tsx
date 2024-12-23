@@ -6,8 +6,6 @@ interface ImageProps {
 }
 
 const Image = ( { url, className="" }: ImageProps ): ReactNode => {
-
-
     return <img
         alt=""
         loading="lazy"

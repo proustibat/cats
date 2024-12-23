@@ -10,6 +10,7 @@
 
 .navContainerWithImage {
     position: relative;
+    min-height: 5rem;
 }
 
 .image {

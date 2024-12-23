@@ -1,7 +1,5 @@
 import { ChangeEvent, MouseEvent, useState } from "react";
-import {
-    useQuery,
-} from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import classnames from "classnames";
 import { useDebounce } from "@uidotdev/usehooks";
 import { API_TYPE, fetchBreeds, QUERY_KEY, search, type TCatBreedItem } from "./apis/the-cat";
@@ -20,8 +18,10 @@ import fonts from "./styles/modern-fonts.module.css";
 const filterBreedItems = ( data: TCatBreedItem[] ) => data.map( ( { id, name, reference_image_id } ) => ( { id, name, reference_image_id } ) );
 
 const App = () => {
+
     const [ showDialog, setShowDialog ] = useState<boolean>( false );
     const [ searchTerm, setSearchTerm ] = useState<string>( "" );
+
     const debouncedSearch = useDebounce( searchTerm, 500 );
 
     // fetch
@@ -42,7 +42,7 @@ const App = () => {
 
     const [ currentCatId, setCurrentCatId ] = useState<string | null>( null );
 
-    const handleClick = ( id:string ) => ( e: MouseEvent<HTMLButtonElement> ) => {
+    const handleClick = ( id:string ) => async ( e: MouseEvent<HTMLButtonElement> ) => {
         e.preventDefault();
         setShowDialog( true );
         setCurrentCatId( id );

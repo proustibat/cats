@@ -19,7 +19,6 @@ export enum QUERY_KEY {
     BREEDS = "breeds",
     SEARCH = "search",
     BREED = "breed",
-    IMAGE = "image",
     VOTES = "votes",
     RATE = "rate",
 }
@@ -73,14 +72,14 @@ export interface IVote {
   value: number
 }
 
-interface IImage {
+export interface IImage {
   id: string;
   url: string;
   breeds: ICatBreed[];
   width: number;
   height: number;
 }
-export type TImageItem = Pick<IImage, "url">;
+export type TImageItem = Pick<IImage, "url" | "id">;
 
 export const fetchBreeds = async (): Promise<ICatBreed[]> => {
     const breeds = await axios.get<ICatBreed[]>( `/breeds` );
@@ -92,12 +91,24 @@ export const fetchVotes = async (): Promise<IVote[]> => {
     return votes.data;
 };
 
-export const fetchBreed = ( id: string ) => async (): Promise<ICatBreed> => {
+export const fetchBreed = ( id: string ) => async (): Promise<{breed: ICatBreed, image?: TImageItem}> => {
     const response = await axios.get<ICatBreed>( `/breeds/${ id }` );
-    return response.data;
+    let image: TImageItem | null = null;
+    if( response.data.reference_image_id ) {
+        const imgRes = await fetchImage( response.data.reference_image_id );
+        if ( imgRes ) {
+            const { url, id } = imgRes;
+            image = { url, id };
+        }
+    }
+
+    return {
+        breed: response.data,
+        ...( image && { image } )
+    };
 };
 
-export const fetchImage = ( id: string | null ) => async (): Promise<IImage> => {
+export const fetchImage = async ( id: string | null ) : Promise<IImage> => {
     const response = await axios.get<IImage>( `/images/${ id }` );
     return response.data;
 };
@@ -113,7 +124,6 @@ export enum ACTION_VOTE {
 }
 
 export const postVote = ( { imageId, action }: {imageId: string, action: ACTION_VOTE } ) => {
-    console.log( "POSTVOTE ", imageId, action );
     return axios.post( '/votes', {
         image_id: imageId,
         sub_id: crypto.randomUUID(), // todo: using a user to prevent multi votes

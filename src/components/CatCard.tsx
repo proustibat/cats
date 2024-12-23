@@ -1,7 +1,7 @@
-import { ReactElement, useEffect, useState, MouseEvent } from "react";
+import { ReactElement, MouseEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import classnames from "classnames";
-import { fetchBreed, fetchImage, ICatBreed, QUERY_KEY, TImageItem } from "../apis/the-cat";
+import { fetchBreed, type ICatBreed, type TImageItem, QUERY_KEY } from "../apis/the-cat";
 import Image from "./Image";
 import CloseButton from "./CloseButton.tsx";
 import Loader from "./Loader";
@@ -16,32 +16,17 @@ interface CatCardProps {
 }
 
 const CatCard = ( { id, onClose, onNav }: CatCardProps ): ReactElement => {
-    const [ imageId, setImageId ] = useState<string | null>( null );
-
-    const { isPending, error, data, isFetching, isFetched } = useQuery<ICatBreed, Error>( {
+    const { isPending, error, data, isFetching } = useQuery<{breed: ICatBreed, image?: TImageItem}, Error>( {
         queryKey: [ QUERY_KEY.BREED, id ],
         queryFn: fetchBreed( id ),
     } );
-
-    const { isPending: isPendingImage, data: dataImage, isFetching: isFetchingImage } = useQuery<TImageItem, Error>( {
-        queryKey: [ QUERY_KEY.IMAGE, id ],
-        queryFn: fetchImage( imageId ),
-        select: ( data: TImageItem ) => ( { url: data.url } ),
-        enabled: !!imageId
-    } );
-
-    useEffect( () => {
-        if( isFetched && data?.reference_image_id ) {
-            setImageId( data.reference_image_id );
-        }
-    }, [ isFetched, data?.reference_image_id ] );
     
     const handleNavClick = ( e: MouseEvent<HTMLButtonElement> ) => {
         e.preventDefault();
         onNav( e.currentTarget.value as "prev" | "next" );
     };
 
-    if( isFetching || isPending || ( ( isFetchingImage || isPendingImage ) && data?.reference_image_id ) ) {
+    if( isFetching || isPending ) {
         return <div id="" className={styles.loading}>
             <Loader />
         </div>;
@@ -56,7 +41,7 @@ const CatCard = ( { id, onClose, onNav }: CatCardProps ): ReactElement => {
                 <section className={styles.container}>
                     <div className={styles.navContainerWithImage}>
                         <CloseButton onClose={onClose}/>
-                        {dataImage?.url && <Image className={styles.image} url={dataImage.url}/>}
+                        {data.image?.url && <Image className={styles.image} url={data.image.url} />}
                         <div className={styles.nav}>
                             <button onClick={handleNavClick} value="prev" type="button">&#8592;</button>
                             <button onClick={handleNavClick} value="next" type="button">&#8594;</button>
@@ -64,15 +49,15 @@ const CatCard = ( { id, onClose, onNav }: CatCardProps ): ReactElement => {
                     </div>
                     <p className={classnames( fonts.systemUi, styles.origin )}>UNITED STATES</p>
                     <h2 className={classnames( fonts.humanist, styles.name )}>
-                        <span>{data.name}</span>
-                        {data.alt_names && <span>(also called {data.alt_names})</span>}
+                        <span>{data.breed.name}</span>
+                        {data.breed.alt_names && <span>(also called {data.breed.alt_names})</span>}
                     </h2>
-                    <p className={styles.description}>{data.description}</p>
+                    <p className={styles.description}>{data.breed.description}</p>
                     <p className={styles.temperament}>
                         <span>Temperament</span>
-                        <span>{data.temperament}</span>
+                        <span>{data.breed.temperament}</span>
                     </p>
-                    {imageId && <Rate imageId={imageId}/>}
+                    {data.image?.id && <Rate imageId={data.image.id}/>}
                 </section>
             )}
         </>
