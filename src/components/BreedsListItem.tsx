@@ -8,13 +8,13 @@ interface BreedsListItemProps extends PropsWithChildren{
 }
 
 const BreedsListItem = ( { imageId, onClick, children }: BreedsListItemProps ): ReactElement => {
-    const note = useRate( imageId );
+    const { rate } = useRate( imageId );
 
     return (
         <li>
             <button className={styles.button} type="button" onClick={onClick}>
                 {children}
-                {( note && note !== 0 ) ? ` (${ note })` : null}
+                {( rate && rate !== 0 ) ? ` (${ rate })` : null}
             </button>
         </li>
     );

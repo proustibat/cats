@@ -1,9 +1,14 @@
-import { ReactElement, MouseEvent, useEffect } from "react";
-import useRate from "../hooks/useRate.tsx";
-import styles from "../styles/Rate.module.css";
+import { ReactElement, useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ACTION_VOTE, postVote, QUERY_KEY } from "../apis/the-cat.ts";
 import classnames from "classnames";
+
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
+
+import useRate from "../hooks/useRate.tsx";
+import { postVote, QUERY_KEY } from "../apis/the-cat.ts";
+
+import styles from "../styles/Rate.module.css";
 
 interface RateProps {
    imageId: string;
@@ -12,36 +17,61 @@ interface RateProps {
 
 const Rate = ( { imageId, disabled = false }: RateProps ): ReactElement => {
     const queryClient = useQueryClient();
-    const rate = useRate( imageId );
+    const { rate, total } = useRate( imageId );
+    const [ feedback, setFeedback ] = useState<string>( "" );
 
     const { isPending, isError, error, isSuccess, mutate, reset } = useMutation( {
         mutationKey: [ QUERY_KEY.RATE ],
         mutationFn: postVote,
-        onSuccess: () => queryClient.invalidateQueries( { queryKey: [ QUERY_KEY.VOTES ] } ),
+        onSuccess: () => {
+            queryClient.invalidateQueries( { queryKey: [ QUERY_KEY.VOTES ] } );
+        },
     } );
 
     useEffect( () => {
         reset();
     }, [ imageId, reset ] );
 
-    const handleVote = ( e: MouseEvent<HTMLButtonElement> ) => {
-        e.preventDefault();
-        mutate( { imageId, action: e.currentTarget.value as ACTION_VOTE } );
+    useEffect( () => {
+        if( isSuccess ) {
+            setFeedback( "Rated!" );
+        }
+        const timer = setTimeout( () => { setFeedback( "" ); }, 3000 );
+        return () => clearTimeout( timer );
+    }, [ isSuccess ] );
+
+    const handleVote = ( value: number | number[] ) => {
+        if( typeof value === "number" ){
+            mutate( { imageId, value } );
+        }
     };
 
     return (
-        <>
+        <section className={styles.section}>
             <div className={styles.container}>
-                <button disabled={disabled || isPending} onClick={handleVote} value={ACTION_VOTE.DOWN} type="button" className={styles.button}>-</button>
-                <p className={styles.rate}>Votes: {rate}</p>
-                <button disabled={disabled || isPending} onClick={handleVote} value={ACTION_VOTE.UP} type="button" className={styles.button}>+</button>
+                <p className={styles.rate}>Rate: {rate} / 10<span>{`(${ total } vote${ ( total && total>1 ) ? "s":"" })`}</span></p>
             </div>
+
+            <div className={styles.container}>
+                <Slider
+                    defaultValue={undefined}
+                    marks={{ "0": 0, "2": 2, "4": 4, "6": 6, "8": 8, "10": 10 }}
+                    disabled={disabled || isPending || feedback?.length > 0}
+                    className={styles.input}
+                    min={0}
+                    max={10}
+                    step={1}
+                    dots={true}
+                    onChangeComplete={handleVote}
+                />
+            </div>
+
             <div className={classnames( styles.container, styles.message )}>
                 {isPending && <p>sending...</p>}
                 {isError && <p>An error occurred: {error.message}</p>}
-                {isSuccess && <p>Rated!</p>}
+                {feedback && <p>{feedback}</p>}
             </div>
-        </>
+        </section>
 
     );
 };
