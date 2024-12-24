@@ -20,7 +20,7 @@ export const VotesProvider = ( { children }: PropsWithChildren ) => {
     const { data: allVotes, isLoading, isFetching } = useQuery<IVote[], Error>( {
         queryKey: [ QUERY_KEY.VOTES ],
         queryFn: fetchVotes,
-        refetchInterval: 1000,
+        refetchInterval: 5000,
         refetchOnWindowFocus: true,
         refetchOnReconnect: true,
         // refetchIntervalInBackground: true
