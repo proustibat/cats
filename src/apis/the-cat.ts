@@ -118,15 +118,10 @@ export const search = ( searchTerm: string ) => async (): Promise<ICatBreed[]> =
     return response.data;
 };
 
-export enum ACTION_VOTE {
-    UP = "up",
-    DOWN = "down"
-}
-
-export const postVote = ( { imageId, action }: {imageId: string, action: ACTION_VOTE } ) => {
+export const postVote = ( { imageId, value }: {imageId: string, value: number } ) => {
     return axios.post( '/votes', {
         image_id: imageId,
         sub_id: crypto.randomUUID(), // todo: using a user to prevent multi votes
-        value: action === ACTION_VOTE.UP ? 1 : -1,
+        value,
     } );
 };
