@@ -1,5 +1,6 @@
 import { PropsWithChildren, ReactElement } from "react";
-import { DialogContent, DialogOverlay } from "@reach/dialog";
+import { Modal as ReactResponsiveModal } from 'react-responsive-modal';
+import 'react-responsive-modal/styles.css';
 import styles from "../styles/Modal.module.css";
 
 interface ModalProps extends PropsWithChildren{
@@ -9,15 +10,12 @@ interface ModalProps extends PropsWithChildren{
 
 const Modal = ( { children, showDialog = false, onDismiss = () => {} }: ModalProps ): ReactElement => {
     return (
-        <DialogOverlay
-            className={styles.dialogOverlay}
-            isOpen={ showDialog }
-            onDismiss={onDismiss}
-        >
-            <DialogContent className={styles.dialogContent}>
-                {children}
-            </DialogContent>
-        </DialogOverlay>
+        <ReactResponsiveModal classNames={{
+            modal: styles.modal,
+            closeButton: styles.closeButton
+        }} open={showDialog} onClose={onDismiss} center>
+            {children}
+        </ReactResponsiveModal>
     );
 };
 
