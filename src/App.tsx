@@ -73,7 +73,7 @@ const App = () => {
     };
 
     if( isFetching || isPending ) {
-        return <p className={styles.loading}><span>Loading...</span><Loader /></p>;
+        return <div className={styles.loading}><span>Loading...</span><Loader /></div>;
     }
     if( error ) {
         return <>ERROR</>;

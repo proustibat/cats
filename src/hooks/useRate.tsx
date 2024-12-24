@@ -4,7 +4,7 @@ import { VotesContext } from "../contexts/VotesContext.tsx";
 const useRate = ( imageId?: string ) => {
     const { allVotes, isLoading, getAverageVoteForImage, getSumVotes } = useContext( VotesContext );
 
-    const [ rate, setRate ] = useState<number>( 0 );
+    const [ rate, setRate ] = useState<number>();
 
     useEffect( () => {
         if( !isLoading && imageId ) {

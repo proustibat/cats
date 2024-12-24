@@ -2,21 +2,24 @@
     width: 100%;
     margin: auto;
     padding: 1rem;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
-}
-
-@media screen and (min-width: 480px) {
-    .dialogOverlay {
-        justify-content: center;
-    }
 }
 
 .dialogContent {
     padding: 0!important;
     margin: 0 auto!important;
-    width: auto!important;
-    max-width: 400px;
-    height: auto!important;
+    width: 100%!important;
+    background-color: transparent!important;
+}
+
+
+@media screen and (min-width: 480px) {
+    .dialogOverlay {
+        min-height: 100vh;
+        justify-content: center;
+    }
+    .dialogContent {
+        width: auto!important;
+    }
 }

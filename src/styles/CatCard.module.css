@@ -3,14 +3,23 @@
     margin: 0 auto;
     background-color:white;
     box-shadow: 0 5px 20px #555;
-    padding-bottom: 1rem;
+    /*padding-bottom: 1rem;*/
     position: relative;
     overflow:hidden;
+    width: 100%;
+}
+.information {
+    padding: 0;
+    margin: 0;
+}
+
+.opacity {
+    opacity: 0.5;
 }
 
 .navContainerWithImage {
     position: relative;
-    min-height: 5rem;
+    min-height: 10rem;
 }
 
 .image {
@@ -37,6 +46,7 @@
         align-items: center;
         margin: 0.5rem;
         cursor: pointer;
+        z-index: 2;
     }
 }
 
@@ -79,7 +89,12 @@
 
 .loading {
     text-align: center;
-    padding: 5rem 10rem;
+    background-color: rgba(255, 255, 255, 0.6);
+    position: absolute;
     width: 100%;
-    background-color: white;
+    height: 100%;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
