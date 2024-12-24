@@ -1,25 +1,7 @@
-.dialogOverlay {
-    width: 100%;
-    margin: auto;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
+.modal {
+    padding: 0;
 }
 
-.dialogContent {
-    padding: 0!important;
-    margin: 0 auto!important;
-    width: 100%!important;
-    background-color: transparent!important;
-}
-
-
-@media screen and (min-width: 480px) {
-    .dialogOverlay {
-        min-height: 100vh;
-        justify-content: center;
-    }
-    .dialogContent {
-        width: auto!important;
-    }
+.closeButton {
+    display: none;
 }

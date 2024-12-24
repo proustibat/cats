@@ -1,9 +1,14 @@
-import { ReactElement, MouseEvent, useEffect } from "react";
-import useRate from "../hooks/useRate.tsx";
-import styles from "../styles/Rate.module.css";
+import { ReactElement, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ACTION_VOTE, postVote, QUERY_KEY } from "../apis/the-cat.ts";
 import classnames from "classnames";
+
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
+
+import useRate from "../hooks/useRate.tsx";
+import { postVote, QUERY_KEY } from "../apis/the-cat.ts";
+
+import styles from "../styles/Rate.module.css";
 
 interface RateProps {
    imageId: string;
@@ -17,25 +22,41 @@ const Rate = ( { imageId, disabled = false }: RateProps ): ReactElement => {
     const { isPending, isError, error, isSuccess, mutate, reset } = useMutation( {
         mutationKey: [ QUERY_KEY.RATE ],
         mutationFn: postVote,
-        onSuccess: () => queryClient.invalidateQueries( { queryKey: [ QUERY_KEY.VOTES ] } ),
+        onSuccess: () => {
+            queryClient.invalidateQueries( { queryKey: [ QUERY_KEY.VOTES ] } );
+        },
     } );
 
     useEffect( () => {
         reset();
     }, [ imageId, reset ] );
 
-    const handleVote = ( e: MouseEvent<HTMLButtonElement> ) => {
-        e.preventDefault();
-        mutate( { imageId, action: e.currentTarget.value as ACTION_VOTE } );
+    const handleVote = ( value: number | number[] ) => {
+        if( typeof value === "number" ){
+            mutate( { imageId, value } );
+        }
     };
 
     return (
         <>
             <div className={styles.container}>
-                <button disabled={disabled || isPending} onClick={handleVote} value={ACTION_VOTE.DOWN} type="button" className={styles.button}>-</button>
-                <p className={styles.rate}>Votes: {rate}</p>
-                <button disabled={disabled || isPending} onClick={handleVote} value={ACTION_VOTE.UP} type="button" className={styles.button}>+</button>
+                <p className={styles.rate}>Rate: {rate} / 10</p>
             </div>
+
+            <div className={styles.container}>
+                <Slider
+                    defaultValue={undefined}
+                    marks={{ "0": 0, "2": 2, "4": 4, "6": 6, "8": 8, "10": 10 }}
+                    disabled={disabled}
+                    className={styles.input}
+                    min={0}
+                    max={10}
+                    step={1}
+                    dots={true}
+                    onChangeComplete={handleVote}
+                />
+            </div>
+
             <div className={classnames( styles.container, styles.message )}>
                 {isPending && <p>sending...</p>}
                 {isError && <p>An error occurred: {error.message}</p>}

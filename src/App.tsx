@@ -9,7 +9,6 @@ import Modal from "./components/Modal.tsx";
 import SearchBox from "./components/SearchBox.tsx";
 import Loader from "./components/Loader.tsx";
 
-import "@reach/dialog/styles.css";
 import "./styles/reset.css";
 import "./styles/styles.css";
 import styles from "./styles/App.module.css";
@@ -81,22 +80,22 @@ const App = () => {
 
     return (
         <main className={classnames( fonts.industrial, styles.main )}>
-            <h1 className={styles.title}>Hello {API_TYPE === "dogs" ? "dogs": "cats"}!</h1>
+            <h1 className={styles.title}>Hello {API_TYPE === "dogs" ? "dogs" : "cats"}!</h1>
 
-            <SearchBox searchTerm={searchTerm} onChange={handleChange} />
+            <SearchBox searchTerm={searchTerm} onChange={handleChange}/>
             <div className={styles.searchResultMessage}>
                 {( isFetchingSearch ) && <p>Loading...</p>}
                 {errorSearch && <p>Error</p>}
             </div>
 
             <BreedsList
-                list={ searchTerm ? dataSearch : data}
+                list={searchTerm ? dataSearch : data}
                 onItemClick={handleClick}
             />
 
             {currentCatId && (
-                <Modal showDialog={ showDialog } onDismiss={ handleClose } >
-                    <CatCard id={currentCatId} onClose={handleClose} onNav={handleNav} />
+                <Modal showDialog={showDialog} onDismiss={handleClose}>
+                    <CatCard id={currentCatId} onClose={handleClose} onNav={handleNav}/>
                 </Modal>
             )}
         </main>
