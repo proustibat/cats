@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useContext, useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import classnames from "classnames";
 
@@ -9,6 +9,7 @@ import useRate from "../hooks/useRate.tsx";
 import { postVote, QUERY_KEY } from "../apis/the-cat.ts";
 
 import styles from "../styles/Rate.module.css";
+import { UserContext } from "../contexts/UserContext.tsx";
 
 interface RateProps {
    imageId: string;
@@ -19,12 +20,13 @@ const Rate = ( { imageId, disabled = false }: RateProps ): ReactElement => {
     const queryClient = useQueryClient();
     const { rate, total } = useRate( imageId );
     const [ feedback, setFeedback ] = useState<string>( "" );
+    const { userId } = useContext( UserContext );
 
     const { isPending, isError, error, isSuccess, mutate, reset } = useMutation( {
         mutationKey: [ QUERY_KEY.RATE ],
         mutationFn: postVote,
         onSuccess: () => {
-            queryClient.invalidateQueries( { queryKey: [ QUERY_KEY.VOTES ] } );
+            queryClient.invalidateQueries( { queryKey: [ QUERY_KEY.VOTES ] } ).catch( console.error );
         },
     } );
 
@@ -41,8 +43,10 @@ const Rate = ( { imageId, disabled = false }: RateProps ): ReactElement => {
     }, [ isSuccess ] );
 
     const handleVote = ( value: number | number[] ) => {
-        if( typeof value === "number" ){
-            mutate( { imageId, value } );
+        if( typeof value === "number" ) {
+            if( userId ) {
+                mutate( { imageId, value, userId } );
+            }
         }
     };
 
