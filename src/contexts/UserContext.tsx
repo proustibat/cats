@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react';
-
+import { getUid } from "../utils.ts";
 
 const LOCALSTORAGE_KEY = "user";
 
@@ -11,7 +11,7 @@ interface IUserContext {
 export const UserContext = React.createContext<IUserContext>( { userId: null } );
 export const UserProvider = ( { children }: PropsWithChildren ) => {
 
-    const [ userId, setUserId ] = useState<string>( crypto.randomUUID() );
+    const [ userId, setUserId ] = useState<string>( getUid() );
 
     useEffect( () => {
         const lsUser = localStorage.getItem( LOCALSTORAGE_KEY );
