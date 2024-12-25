@@ -118,10 +118,10 @@ export const search = ( searchTerm: string ) => async (): Promise<ICatBreed[]> =
     return response.data;
 };
 
-export const postVote = ( { imageId, value }: {imageId: string, value: number } ) => {
+export const postVote = ( { imageId, value, userId }: {imageId: string, value: number, userId: string } ) => {
     return axios.post( '/votes', {
         image_id: imageId,
-        sub_id: crypto.randomUUID(), // todo: using a user to prevent multi votes
+        sub_id: userId,
         value,
     } );
 };
