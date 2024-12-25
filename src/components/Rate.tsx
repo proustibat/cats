@@ -39,6 +39,9 @@ const Rate = ( { imageId, disabled = false }: RateProps ): ReactElement => {
         if( isSuccess ) {
             setFeedback( "Rated!" );
         }
+        else {
+            setFeedback( "" );
+        }
         const timer = setTimeout( () => { setFeedback( "" ); }, 3000 );
         return () => clearTimeout( timer );
     }, [ isSuccess ] );
