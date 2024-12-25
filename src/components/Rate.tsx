@@ -10,6 +10,7 @@ import { postVote, QUERY_KEY } from "../apis/the-cat.ts";
 
 import styles from "../styles/Rate.module.css";
 import { UserContext } from "../contexts/UserContext.tsx";
+import ReactGA from "react-ga4";
 
 interface RateProps {
    imageId: string;
@@ -46,6 +47,11 @@ const Rate = ( { imageId, disabled = false }: RateProps ): ReactElement => {
         if( typeof value === "number" ) {
             if( userId ) {
                 mutate( { imageId, value, userId } );
+                ReactGA.event( {
+                    category: 'User',
+                    action: 'Rated',
+                    label: imageId,
+                } );
             }
         }
     };

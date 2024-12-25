@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import { useQuery } from '@tanstack/react-query';
 import classnames from "classnames";
 import { useDebounce } from "@uidotdev/usehooks";
@@ -13,6 +13,7 @@ import "./styles/reset.css";
 import "./styles/styles.css";
 import styles from "./styles/App.module.css";
 import fonts from "./styles/modern-fonts.module.css";
+import ReactGA from "react-ga4";
 
 const filterBreedItems = ( data: TCatBreedItem[] ) => data.map( ( { id, name, reference_image_id } ) => ( { id, name, reference_image_id } ) );
 
@@ -40,6 +41,10 @@ const App = () => {
     } );
 
     const [ currentCatId, setCurrentCatId ] = useState<string | null>( null );
+
+    useEffect( () => {
+        ReactGA.send( { hitType: "pageview", page: window.location.pathname } );
+    }, [] );
 
     const handleClick = ( id:string ) => async ( e: MouseEvent<HTMLButtonElement> ) => {
         e.preventDefault();

@@ -1,4 +1,4 @@
-import { ReactElement, MouseEvent } from "react";
+import { ReactElement, MouseEvent, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import classnames from "classnames";
 import { fetchBreed, type ICatBreed, type TImageItem, QUERY_KEY, IFact } from "../apis/the-cat";
@@ -8,6 +8,7 @@ import Loader from "./Loader";
 import fonts from "../styles/modern-fonts.module.css";
 import styles from "../styles/CatCard.module.css";
 import Rate from "./Rate.tsx";
+import ReactGA from "react-ga4";
 
 interface CatCardProps {
    id: string;
@@ -27,6 +28,10 @@ const CatCard = ( { id, onClose, onNav }: CatCardProps ): ReactElement => {
         e.preventDefault();
         onNav( e.currentTarget.value as "prev" | "next" );
     };
+
+    useEffect( () => {
+        ReactGA.send( { hitType: "pageview", page: "CatCard", id } );
+    }, [ id ] );
 
     return (
         <section className={styles.container}>
