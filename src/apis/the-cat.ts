@@ -81,6 +81,13 @@ export interface IImage {
 }
 export type TImageItem = Pick<IImage, "url" | "id">;
 
+export interface IFact {
+    id: string
+    fact: string,
+    breed_id: string,
+    title: string
+}
+
 export const fetchBreeds = async (): Promise<ICatBreed[]> => {
     const breeds = await axios.get<ICatBreed[]>( `/breeds` );
     return breeds.data;
@@ -91,11 +98,28 @@ export const fetchVotes = async (): Promise<IVote[]> => {
     return votes.data;
 };
 
-export const fetchBreed = ( id: string ) => async (): Promise<{breed: ICatBreed, image?: TImageItem}> => {
+const fetchImage = async ( id: string | null ) : Promise<IImage> => {
+    const response = await axios.get<IImage>( `/images/${ id }` );
+    return response.data;
+};
+
+const fetchRandomFactAboutBreed = async ( breedId: string ) : Promise<IFact[]> => {
+    const response = await axios.get<IFact[]>( `/breeds/${ breedId }/facts` );
+    return response.data;
+};
+
+export const fetchBreed = ( id: string ) => async (): Promise<{breed: ICatBreed, image?: TImageItem, fact?: IFact}> => {
     const response = await axios.get<ICatBreed>( `/breeds/${ id }` );
+
+    let fact: IFact | null = null;
+    const factRes = await fetchRandomFactAboutBreed( id ).catch( console.error );
+    if( factRes && factRes.length > 0 ) {
+        fact = factRes[0];
+    }
+
     let image: TImageItem | null = null;
-    if( response.data.reference_image_id ) {
-        const imgRes = await fetchImage( response.data.reference_image_id );
+    if( response.data?.reference_image_id ) {
+        const imgRes = await fetchImage( response.data.reference_image_id ).catch( console.error );
         if ( imgRes ) {
             const { url, id } = imgRes;
             image = { url, id };
@@ -104,13 +128,9 @@ export const fetchBreed = ( id: string ) => async (): Promise<{breed: ICatBreed,
 
     return {
         breed: response.data,
-        ...( image && { image } )
+        ...( image && { image } ),
+        ...( fact && { fact } )
     };
-};
-
-export const fetchImage = async ( id: string | null ) : Promise<IImage> => {
-    const response = await axios.get<IImage>( `/images/${ id }` );
-    return response.data;
 };
 
 export const search = ( searchTerm: string ) => async (): Promise<ICatBreed[]> => {
